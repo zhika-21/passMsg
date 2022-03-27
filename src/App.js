@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react"
+import "./App.css"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component{
+  constructor(){
+    super()
+    this.state={
+      inputValue:"",
+      passedMsg:""
+    }
+  }
+handleChange=(e)=>{
+  this.setState({inputValue: e.target.value})
 }
-
+passMsg=()=>{
+  const newMsg = this.state.inputValue.toUpperCase().trim();
+  if(this.state.inputValue){
+    this.setState({
+      passedMsg: newMsg,
+      inputValue: ""
+    })
+  }else{
+    alert("Pass your message")
+  }
+}
+render(){
+  return(
+    <div className="container">
+      <h2>Message You Would Like To Pass</h2>
+      <input value={this.state.inputValue} onChange={this.handleChange} />
+      <button onClick={this.passMsg}>Submit</button>
+      <div className="alert"></div>
+      <h2>Delivered Message</h2>
+      <div className="message">{this.state.passedMsg}</div>
+    </div>
+  )
+}
+}
 export default App;
