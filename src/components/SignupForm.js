@@ -1,66 +1,40 @@
-import React,{useState} from 'react'
-import {Formik} from "formik"
-import * as Yup from 'yup';
+import React from "react"
+import "./App.css"
 
-
-const SiginSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid email'),
-  password: Yup.string().min(6, 'Password should be more than 6 length!')
-});
-const validate=(values,props) =>{
- const error={}
-  if (!values.email) {
-    error.email = 'Required';
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    error.email = 'Invalid email address';
+class App extends React.Component{
+  constructor(){
+    super()
+    this.state={
+      inputValue:"",
+      passedMsg:""
+    }
   }
-  return error;
-};
-
-
-export const SignupForm=() =>{
-  return (
-    <div>
-    <h1>In my App</h1>
-    <Formik
-      initialValues={{ 
-        email: '',
-       password: "" 
-      }}
-      onSubmit={(values) => {
-        console.log("values", values)
-      }}
-      validationSchema={SiginSchema}
-    >
-      {({
-        values,
-        error,
-        touched,
-        handleChange,
-        handleSubmit,
-        isSubmitting
-      })=>(
-                <form onSubmit={handleSubmit}>
-          <input
-            name="email"
-            onChange={handleChange}
-            value={values.email}
-            placeholder="email"
-          />
-           <input
-            name="password"
-            onChange={handleChange}
-            value={values.password}
-            placeholder="password"
-          />
-          <p>{JSON.stringify(error)}</p>
-        
-          <button type="submit">Submit</button>
-        </form>
-      )}
-    </Formik>
-  </div>
-
+handleChange=(e)=>{
+  this.setState({inputValue: e.target.value})
+}
+passMsg=()=>{
+  const newMsg = this.state.inputValue.toUpperCase().trim();
+  if(this.state.inputValue){
+    this.setState({
+      passedMsg: newMsg,
+      inputValue: ""
+    })
+  }else{
+    alert("Pass your message")
+  }
+}
+render(){
+  return(
+    <div className="container">
+      <h2>Message You Would Like To Pass</h2>
+      <input value={this.state.inputValue} onChange={this.handleChange} />
+      <button onClick={this.passMsg}>Submit</button>
+      <div className="alert"></div>
+      <h2>Delivered Message</h2>
+      <div className="message">{this.state.passedMsg}</div>
+    </div>
   )
 }
+}
+export default App;
 
